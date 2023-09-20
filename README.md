@@ -1,3 +1,2 @@
-# GoldenTime_Shootnews
-Shootnews app created by GoldenTime team
-task #1. local connection
+# GoldenTime_Shotnews
+Shotnews app created by GoldenTime team
