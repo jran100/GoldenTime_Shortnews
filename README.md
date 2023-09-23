@@ -1,2 +1,2 @@
-# GoldenTime_Shotnews
-Shotnews app created by GoldenTime team
+# GoldenTime_Shortnews
+Shortnews app created by GoldenTime team
