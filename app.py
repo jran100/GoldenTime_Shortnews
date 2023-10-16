@@ -14,7 +14,7 @@ youtube = build("youtube", "v3", developerKey=api_key)
 @app.route('/')
 def video_list():
     channel_id = "UCF4Wxdo3inmxP-Y59wXDsFw"  # MBC 뉴스 채널 ID
-    videos = youtube.search().list(part="id", channelId=channel_id, maxResults=10, type="video").execute()
+    videos = youtube.search().list(part="id", channelId=channel_id, maxResults=10, type="video", order="date").execute()
     
     video_info = []
     for video in videos["items"]:
