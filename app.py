@@ -14,7 +14,7 @@ youtube = build("youtube", "v3", developerKey=api_key)
 @app.route('/')
 def video_list():
     channel_id = "UCF4Wxdo3inmxP-Y59wXDsFw"  # MBC 뉴스 채널 ID
-    videos = youtube.search().list(part="id", channelId=channel_id, maxResults=10, type="video", order="date").execute()
+    videos = youtube.search().list(part="id", channelId=channel_id, maxResults=20, type="video", order = "date").execute()
     
     video_info = []
     for video in videos["items"]:
@@ -22,9 +22,15 @@ def video_list():
         title = youtube.videos().list(part="snippet", id=video_id).execute()
         video_title = title["items"][0]["snippet"]["title"]
         video_thumbnail = title["items"][0]["snippet"]["thumbnails"]["default"]["url"]
-        video_info.append({"id": video_id, "title": video_title, "thumbnail": video_thumbnail})
+        video_info.append({"id": video_id, "title": video_title, "thumbnail": video_thumbnail, "url": f"/play_video/{video_id}"})
+
     
     return render_template('videos.html', video_info=video_info)
+
+
+@app.route('/play_video/<video_id>')
+def play_video(video_id):
+    return render_template('video_player.html', video_id=video_id)
 
 if __name__ == '__main__':
     app.run()
