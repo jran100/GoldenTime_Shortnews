@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Golden Time</title>
+    <style>
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        li {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        h1 {
+            text-align: center; /* 제목을 가운데로 배치 */
+        }
+
+        .video-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Golden Time</h1>
+    <ul>
+        {% for video in video_info %}
+        <li>
+            <a href="{{ video.url }}" target="_blank"> <!-- 수정: target="_blank" 추가 -->
+                <img src="{{ video.thumbnail }}" alt="Video Thumbnail" width="320" height="240">
+                <p>{{ video.title }}</p>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

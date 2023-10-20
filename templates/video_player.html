@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Golden Time</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* 상단 정렬로 변경 */
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px; /* 제목 아래 여백 추가 */
+        }
+        iframe {
+            width: 640px; /* 조절 필요한 크기로 변경 */
+            height: 360px; /* 조절 필요한 크기로 변경 */
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ video_title }}</h1>
+    <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen style="display: block; margin: 0 auto;"></iframe>
+    <form action="/gpt" method="GET">
+        <input type="hidden" name="video_id" value="{{ video_id }}">
+        <button type="submit">요약하기</button>
+    </form>
+</body>
+</html>

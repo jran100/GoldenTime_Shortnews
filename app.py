@@ -49,7 +49,7 @@ def get_video_transcript():
 
     return render_template("gpt.html", video_id=video_id, transcript=transcript)
 
-@app.route('/play_video')
+@app.route('/play_video/<video_id>')
 def play_video(video_id):
     return render_template('video_player.html', video_id=video_id)
 
