@@ -28,5 +28,14 @@
         <input type="hidden" name="video_id" value="{{ video_id }}">
         <button type="submit">요약보기</button>
     </form>
+    <form class = "grid" action = "/gpt" method= "POST">
+        <div>
+            <ul>
+                {% for entry in transcript %}
+                    <span>{{ entry.text }}</span>
+                {% endfor %}
+            </ul>
+        </div>
+        </form>
 </body>
 </html>
