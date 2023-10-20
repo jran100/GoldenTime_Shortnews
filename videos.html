@@ -42,6 +42,10 @@
                     <p>{{ video.title }}</p>
                 </div>
             </a>
+            <form action="/gpt" method="GET">
+                <input type="hidden" name="video_id" value="{{ video.id }}">
+                <button type="submit">요약하기</button>
+            </form>
         </li>
         {% endfor %}
     </ul>

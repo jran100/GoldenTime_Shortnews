@@ -1,6 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+import googleapiclient.discovery
+from youtube_transcript_api import YouTubeTranscriptApi
 
 app = Flask(__name__)
 
@@ -27,8 +29,27 @@ def video_list():
     
     return render_template('videos.html', video_info=video_info)
 
+@app.route("/gpt", methods=['GET'])
+def get_video_transcript():
+    video_id = request.args.get('video_id')
+    
+    '''
+    video id를 바탕으로 해당 동영상의 자막을 가져오는 함수
+    '''
+    transcript = []
+    try:
+        tsAPI = YouTubeTranscriptApi.get_transcript(video_id=video_id, languages=["ko"])
+        if "text" in tsAPI[0]:
+            transcript = tsAPI
+        else:
+            raise Exception("There is no Transcripts")
 
-@app.route('/play_video/<video_id>')
+    except Exception as e:
+        print("Error:", str(e))
+
+    return render_template("gpt.html", video_id=video_id, transcript=transcript)
+
+@app.route('/play_video')
 def play_video(video_id):
     return render_template('video_player.html', video_id=video_id)
 
