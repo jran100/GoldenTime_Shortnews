@@ -30,11 +30,11 @@
     </form>
     <form class = "grid" action = "/gpt" method= "POST">
         <div>
-            <ul>
-                {% for entry in transcript %}
-                    <span>{{ entry.text }}</span>
-                {% endfor %}
-            </ul>
+    
+            {% if summary %}
+                <span>{{ summary }}</span>
+            {% endif %}
+        
         </div>
         </form>
 </body>

@@ -9,9 +9,9 @@
     <h1>Video Transcript</h1>
     <div>
         <ul>
-            {% for entry in transcript %}
-                <p>{{ entry.text }}</p>
-            {% endfor %}
+            {% if summary %}
+                <p>{{ summary }}</p>
+            {% endif %}
         </ul>
     </div>
     </form>
