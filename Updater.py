@@ -5,15 +5,14 @@ from DBManager import DBManager
 
 class Updater():
     def __init__(self):
-        self.today = datetime.now().strftime("%Y-%m-%d")
         self.log_path = "log.txt"
 
-
     def isTime(self):
+        today = datetime.now().strftime("%Y-%m-%d")
         with open(self.log_path, "r") as file:
             lines = file.readlines()
             last_date = lines[-1].strip()
-        if self.today != last_date:
+        if today != last_date:
             with open(self.log_path, "w") as file:
                 file.write(self.today)
             return True
@@ -24,9 +23,9 @@ class Updater():
     def update_news(self, broadcastName, broadcastID, maxResults):
         if True: #self.isTime():
             gpt_client = ChatGPTClient()
-            youtube_client = YoutubeClient(broadcastID)
+            youtube_client = YoutubeClient()
             #DBManager 객체 생성
-            video_info = youtube_client.request_video_info(maxResults)
+            video_info = youtube_client.request_video_info(broadcastID, maxResults)
             for video in video_info:
                 video_id = video["id"]
                 transcript = youtube_client.request_transcript(video_id)

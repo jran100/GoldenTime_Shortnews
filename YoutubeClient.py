@@ -5,9 +5,8 @@ api_key = "AIzaSyCcu40FYJarmjUNyilOh4gLPab8DSEOeno"  # 여기에 유튜브 API �
 
 
 class YoutubeClient():
-    def __init__(self, broadcastID):
+    def __init__(self):
         self.youtube = build("youtube", "v3", developerKey=api_key)
-        self.broadcaseID = broadcastID #channel id of youtube channel
 
     def request_transcript(self, videoID) -> str:
         '''
@@ -38,10 +37,10 @@ class YoutubeClient():
         return video_duration
     
 
-    def request_video_info(self, maxResults) -> list:
+    def request_video_info(self, broadcastID, maxResults) -> list:
         video_info = []
         videos = self.youtube.search().list(part="id",
-                                            channelId=self.broadcaseID,
+                                            channelId=broadcastID,
                                             maxResults=maxResults,
                                             type="video", order = "date").execute()
         for video in videos["items"]:
