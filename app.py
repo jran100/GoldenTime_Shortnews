@@ -42,29 +42,20 @@ def video_list():
 
     return render_template("videos.html", video_info=video_info)
 
-@app.route("/gpt", methods=['GET'])
-def get_video_transcript():
-    video_id = request.args.get('video_id')
-    
-    transcript = ""
-    try:
-        tsAPI = YouTubeTranscriptApi.get_transcript(video_id=video_id, languages=["ko"])
-        if "text" in tsAPI[0]:
-            for dict in tsAPI:
-                transcript += dict["text"]
-        else:
-            raise Exception("There is no Transcripts")
-        
-        summary = transcript_summarizer.request_summary(transcript)
-
-    except Exception as e:
-        print("Error:", str(e))
-
-    return render_template("video_player.html", video_id=video_id, summary=summary)
-
 @app.route('/play_video/<video_id>')
 def play_video(video_id):
-    return render_template('video_player.html', video_id=video_id)
+    try:
+        tsAPI = YouTubeTranscriptApi.get_transcript(video_id=video_id, languages=["ko"])
+        transcript = tsAPI
+    except Exception as e:
+        print("Error:", str(e))
+        transcript = []
+
+    # Get video title
+    title = youtube.videos().list(part="snippet", id=video_id).execute()
+    video_title = title["items"][0]["snippet"]["title"]
+
+    return render_template('video_player.html', video_id=video_id, video_title=video_title, transcript=transcript)
 
 if __name__ == '__main__':
     app.run()
