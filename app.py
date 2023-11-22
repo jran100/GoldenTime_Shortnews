@@ -3,9 +3,9 @@ from googleapiclient.discovery import build
 #from googleapiclient.errors import HttpError
 #import googleapiclient.discovery
 from youtube_transcript_api import YouTubeTranscriptApi
-from summarizer import summarizer
+from ChatGPTClient import ChatGPTClient
 
-transcript_summarizer = summarizer()
+transcript_summarizer = ChatGPTClient()
 
 app = Flask(__name__)
 api_key = "AIzaSyCcu40FYJarmjUNyilOh4gLPab8DSEOeno"  # 여기에 유튜브 API 키를 삽입
@@ -44,18 +44,23 @@ def video_list():
 
 @app.route('/play_video/<video_id>')
 def play_video(video_id):
+    transcript = ""
+
     try:
         tsAPI = YouTubeTranscriptApi.get_transcript(video_id=video_id, languages=["ko"])
-        transcript = tsAPI
+        if "text" in tsAPI[0]:
+            for dict in tsAPI:
+                transcript += dict["text"]
+        else:
+            raise Exception("There is no Transcripts")
+        
+        summary = transcript_summarizer.request_summary(transcript)
+
     except Exception as e:
         print("Error:", str(e))
-        transcript = []
+        summary = "Error occurred during transcript retrieval."
 
-    # Get video title
-    title = youtube.videos().list(part="snippet", id=video_id).execute()
-    video_title = title["items"][0]["snippet"]["title"]
-
-    return render_template('video_player.html', video_id=video_id, video_title=video_title, transcript=transcript)
+    return render_template('video_player.html', video_id=video_id, summary=summary)
 
 if __name__ == '__main__':
     app.run()
