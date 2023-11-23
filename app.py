@@ -11,7 +11,6 @@ app = Flask(__name__)
 api_key = ""  # 여기에 유튜브 API 키를 삽입
 youtube = build("youtube", "v3", developerKey=api_key)
 
-
 def get_minute(str:str):
     str = str[2:]
     length = len(str)
