@@ -1,12 +1,31 @@
 from youtube_transcript_api import YouTubeTranscriptApi
 from googleapiclient.discovery import build
+import openai
 
-api_key = "AIzaSyCcu40FYJarmjUNyilOh4gLPab8DSEOeno"  # 여기에 유튜브 API 키를 삽입
+
+class ChatGPTClient():
+    def __init__(self) -> None:
+        self.openai = openai
+        self.openai.api_key = "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"
+
+    def request_summary(self, transcript) -> str:
+        messages = []
+        content = "다음 뉴스 스크립트를 5개의 문장으로 요약해줘\n 뉴스 스크립트:\n" + transcript
+        messages.append({"role": "user", "content": f"{content}"})
+
+        response = self.openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k",
+            messages=messages
+        )
+        return response['choices'][0]['message']['content'].strip()
 
 
 class YoutubeClient():
     def __init__(self):
-        self.youtube = build("youtube", "v3", developerKey=api_key)
+        self.youtube = build(
+            "youtube",
+            "v3",
+            developerKey="AIzaSyCcu40FYJarmjUNyilOh4gLPab8DSEOeno")
 
     def request_transcript(self, videoID) -> str:
         '''
@@ -29,7 +48,7 @@ class YoutubeClient():
     def request_video_length(self, videoID:str):
         '''
         영상 길이를 가져오는 함수
-        *00H00M 형식
+        T00H00M 형식
         '''
         video_details = self.youtube.videos().list(part="contentDetails", id=videoID).execute()
         video_duration = video_details["items"][0]["contentDetails"]["duration"]
@@ -67,4 +86,3 @@ class YoutubeClient():
                 return int(str[:i])
         
         return 0
-

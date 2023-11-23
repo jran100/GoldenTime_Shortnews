@@ -1,8 +1,7 @@
 from datetime import datetime
-from ChatGPTClient import ChatGPTClient
-from YoutubeClient import YoutubeClient
-from DBManager import DBManager
-
+from summary import ChatGPTClient
+from summary import YoutubeClient
+from manager import DBManager
 
 class Updater():
     def __init__(self):
@@ -26,31 +25,21 @@ class Updater():
             gpt_client = ChatGPTClient()
             youtube_client = YoutubeClient()
             db_manager = DBManager()
-            # DBManager 객체 생성
-            video_info = youtube_client.request_video_info(broadcastID, maxResults)
-            for video in video_info:
+
+            videos = youtube_client.request_video_info(broadcastID, maxResults)
+            
+            for video in videos:
                 video_id = video["id"]
-                transcript = youtube_client.request_transcript(video_id)
-                summary = gpt_client.request_summary(transcript)
                 title = video["title"]
                 thumbnail = video['thumbnail']
                 url = video['url']
-                # 데이터 매니저 호출하여 데이터 저장할 것.
+                transcript = youtube_client.request_transcript(video_id)
+                summary = gpt_client.request_summary(transcript)
 
-                # dbmanager.save_data(broadcastName, video['id'], video['title'], video['thumbnail'], video['url'], summary)
+                #video_info.append({"id": video_id, "title": title, "thumbnail": thumbnail, "url": f"/play_video/{video_id}"})
 
-                db_manager.insert_data(broadcastName, video_id, title, thumbnail, url, summary)
-                db_manager.select_all()
-                print("Select All executed")
-                db_manager.select_broad(broadcastName)
-                print(f"Select Broad executed for {broadcastName}")
-
-                print(broadcastName)
-                print(video['id'])
-                print(video['title'])
-                print(video['thumbnail'])
-                print(video['url'])
-                print(summary)
+                #DB에 뉴스 정보 업데이트, url 빼기
+                db_manager.insert_data(broadcastName, video_id, title, thumbnail, summary)
 
             return
 
@@ -58,13 +47,30 @@ class Updater():
             return
 
 
-# broad cast ID로 사용
-mbc_id = "UCF4Wxdo3inmxP-Y59wXDsFw"  # MBC
-ytn_id = "UChlgI3UHCOnwUGzWzbJ3H5w"  # YTN
-kbs_id = "UCcQTRi69dsVYHN3exePtZ1A"  # KBS
-sbs_id = "UCkinYTS9IHqOEwR1Sze2JTw"  # SBS
 
-update = Updater()
-update.update_news('MBC', mbc_id, 60)
+#broad cast ID로 사용
+mbc_id = "UCF4Wxdo3inmxP-Y59wXDsFw" #MBC
+ytn_id = "UChlgI3UHCOnwUGzWzbJ3H5w" #YTN
+kbs_id = "UCcQTRi69dsVYHN3exePtZ1A" #KBS
+sbs_id = "UCkinYTS9IHqOEwR1Sze2JTw" #SBS
+
+
+if __name__ == '__main__':
+    update = Updater()
+    update.update_news('MBC', mbc_id, 10)
+    #update.update_news('YTN', mbc_id, 10)
+    #update.update_news('KBS', mbc_id, 10)
+    #update.update_news('SBS', mbc_id, 10)
+    
+
+
+"""
+
+db_manager.select_all()
+print("Select All executed")
+db_manager.select_broadcast(broadcastName)
+print(f"Select Broad executed for {broadcastName}")
+
+"""
 
 
