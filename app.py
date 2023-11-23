@@ -3,13 +3,14 @@ from googleapiclient.discovery import build
 #from googleapiclient.errors import HttpError
 #import googleapiclient.discovery
 from youtube_transcript_api import YouTubeTranscriptApi
-from ChatGPTClient import ChatGPTClient
+from summary import ChatGPTClient
 
 transcript_summarizer = ChatGPTClient()
 
 app = Flask(__name__)
-api_key = "AIzaSyCcu40FYJarmjUNyilOh4gLPab8DSEOeno"  # 여기에 유튜브 API 키를 삽입
+api_key = ""  # 여기에 유튜브 API 키를 삽입
 youtube = build("youtube", "v3", developerKey=api_key)
+
 
 def get_minute(str:str):
     str = str[2:]
@@ -20,10 +21,14 @@ def get_minute(str:str):
             return int(str[:i])
         
     return 0
-
-@app.route('/')
+        
+@app.route('/', methods=['GET', 'POST'])
 def video_list():
-    channel_id = "UCF4Wxdo3inmxP-Y59wXDsFw"  # MBC 뉴스 채널 ID
+    if request.method == 'POST':
+        channel_id = request.form.get('channel_id')
+    else:
+        channel_id = "UCF4Wxdo3inmxP-Y59wXDsFw"
+        
     videos = youtube.search().list(part="id", channelId=channel_id, maxResults=20, type="video", order = "date").execute()
     
     video_info = []
@@ -41,11 +46,12 @@ def video_list():
                 video_info.append({"id": video_id, "title": video_title, "thumbnail": video_thumbnail, "url": f"/play_video/{video_id}"})
 
     return render_template("videos.html", video_info=video_info)
-
+    
 @app.route('/play_video/<video_id>')
 def play_video(video_id):
+    print("Received Video ID:", video_id)
+    
     transcript = ""
-
     try:
         tsAPI = YouTubeTranscriptApi.get_transcript(video_id=video_id, languages=["ko"])
         if "text" in tsAPI[0]:
@@ -59,6 +65,8 @@ def play_video(video_id):
     except Exception as e:
         print("Error:", str(e))
         summary = "Error occurred during transcript retrieval."
+        
+    print("Video ID:", video_id)
 
     return render_template('video_player.html', video_id=video_id, summary=summary)
 

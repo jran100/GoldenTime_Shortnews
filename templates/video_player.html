@@ -3,8 +3,6 @@
 <head>
     <title>Golden Time</title>
     <style>
-     
-
         body {
             display: flex;
             flex-direction: column;
@@ -13,25 +11,30 @@
             height: 100vh;
             margin: 0;
         }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .container {
             width: 640px; /* Set the container width to 640px */
             text-align: center;
         }
+
         iframe {
             width: 100%; /* Use 100% to fill the container */
             height: 360px; /* Adjust as needed */
             display: block;
             margin: 0 auto; /* Center the iframe */
         }
+
         ul {
             width: 100%; /* Use 100% to fill the container */
             text-align: left; /* Align the text to the left within the container */
             padding: 0;
         }
+
         li {
             font-size: 16px;
             list-style: none;
@@ -39,13 +42,18 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen style="display: block; margin: 0 auto;"></iframe>
-        <ul>
-            {% if summary %}
-                <span>{{ summary }}</span>
-            {% endif %}
-        </ul>
-    </div>
+
+<div class="container">
+    <iframe width="640" height="360" src="http://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen style="display: block; margin: 0 auto;"></iframe>
+
+    <ul>
+        {% if summary %}
+        <span>{{ summary }}</span>
+        {% endif %}
+    </ul>
+
+
+</div>
+
 </body>
 </html>

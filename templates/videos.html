@@ -57,17 +57,13 @@
     </style>
 </head>
 <body>
-    <a href="#" class="category-button" onclick="toggleCategoryView()">Category</a>
-
-    <div class="category-view" id="categoryView">
-        <ul>
-            <li>mbc</li>
-            <li>sbs</li>
-            <li>kbs</li>
-            <li>ytn</li>
-        </ul>
-    </div>
     <h1>Golden Time</h1>
+    <form id="channelForm" method="post" action="/">
+        <button type="submit" name="channel_id" value="UCF4Wxdo3inmxP-Y59wXDsFw">MBC</button>
+        <button type="submit" name="channel_id" value="UChlgI3UHCOnwUGzWzbJ3H5w">YTN</button>
+        <button type="submit" name="channel_id" value="UCcQTRi69dsVYHN3exePtZ1A">KBS</button>
+    </form>
+    
     <ul>
         {% for video in video_info %}
         <li>
