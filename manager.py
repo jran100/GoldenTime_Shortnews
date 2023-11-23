@@ -28,11 +28,11 @@ class DBManager():
         ret = []
         try:
             with self.db.cursor() as cur:
-                query = "SELECT * FROM news" #추가수정
+                query = "SELECT video_id, title, thumbnail FROM news" #추가수정
                 cur.execute(query)
                 rows = cur.fetchall()
                 for e in rows:
-                    news = {'video_id': e[1], 'title': e[2], 'thumbnail': e[3]}
+                    news = {'video_id': e[0], 'title': e[1], 'thumbnail': e[2]}
                     ret.append(news)
                 
                 #for row in rows:
@@ -49,11 +49,11 @@ class DBManager():
         ret = []
         try:
             with self.db.cursor() as cur:
-                query = "SELECT * FROM news WHERE broadcastName = %s" #추가수정
+                query = "SELECT video_id, title, thumbnail FROM news WHERE broadcastName = %s" #추가수정
                 cur.execute(query, (broadcastName, ))
                 rows = cur.fetchall()
                 for e in rows:
-                    news = {'video_id': e[1], 'title': e[2], 'thumbnail': e[3]}
+                    news = {'video_id': e[0], 'title': e[1], 'thumbnail': e[2]}
                     ret.append(news)
                 #for row in rows:
                     #print(row)
@@ -83,9 +83,13 @@ class NewsManager():
     def __init__(self):
         self.db_manager = DBManager()
 
-    def request_news(self):
+    def request_news(self, broadcastName):
+        videos = self.db_manager.select_broadcast(broadcastName)
+        return videos
+
+    def request_all_news(self):
         videos = self.db_manager.select_all()
-        return videos[1:5]
+        return videos
     
     def request_summary(self, video_id):
         summarized_news = self.db_manager.select_summary(video_id)
