@@ -6,7 +6,7 @@ import openai
 class ChatGPTClient():
     def __init__(self) -> None:
         self.openai = openai
-        self.openai.api_key = "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"
+        self.openai.api_key = "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"
 
     def request_summary(self, transcript) -> str:
         messages = []

@@ -3,7 +3,7 @@ import pymysql
 
 class DBManager():
     def __init__(self):
-        self.db = pymysql.connect(host='127.0.0.1', user='Golden1', password='Q1886e', db='news', charset='utf8')
+        self.db = pymysql.connect(host='127.0.0.1', user='root', password='airfoil', db='news', charset='utf8')
 
     def insert_data(self, broadcastName, video_id, title, thumbnail, summary):
         try:

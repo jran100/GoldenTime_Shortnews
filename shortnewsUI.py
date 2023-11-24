@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from manager import NewsManager
 
-
 app = Flask(__name__)
 
 class ListView():
