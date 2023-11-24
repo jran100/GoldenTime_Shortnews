@@ -14,14 +14,15 @@ class Updater():
             last_date = lines[-1].strip()
         if today != last_date:
             with open(self.log_path, "w") as file:
-                file.write(self.today)
+                file.write(today)
             return True
 
         else:
             return False
 
     def update_news(self, broadcastName, broadcastID, maxResults):
-        if True:  # self.isTime():
+        #하루에 한번 업데이트
+        if self.isTime():
             gpt_client = ChatGPTClient()
             youtube_client = YoutubeClient()
             db_manager = DBManager()
@@ -32,13 +33,9 @@ class Updater():
                 video_id = video["id"]
                 title = video["title"]
                 thumbnail = video['thumbnail']
-                url = video['url']
                 transcript = youtube_client.request_transcript(video_id)
                 summary = gpt_client.request_summary(transcript)
-
-                #video_info.append({"id": video_id, "title": title, "thumbnail": thumbnail, "url": f"/play_video/{video_id}"})
-
-                #DB에 뉴스 정보 업데이트, url 빼기
+                #DB에 뉴스 업데이트
                 db_manager.insert_data(broadcastName, video_id, title, thumbnail, summary)
 
             return
@@ -57,20 +54,7 @@ sbs_id = "UCkinYTS9IHqOEwR1Sze2JTw" #SBS
 
 if __name__ == '__main__':
     update = Updater()
-    update.update_news('MBC', mbc_id, 10)
-    #update.update_news('YTN', mbc_id, 10)
-    #update.update_news('KBS', mbc_id, 10)
-    #update.update_news('SBS', mbc_id, 10)
+    update.update_news('MBC', mbc_id, 100)
+    #update.update_news('SBS', sbs_id, 70)
     
-
-
-"""
-
-db_manager.select_all()
-print("Select All executed")
-db_manager.select_broadcast(broadcastName)
-print(f"Select Broad executed for {broadcastName}")
-
-"""
-
 

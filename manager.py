@@ -3,23 +3,26 @@ import pymysql
 
 class DBManager():
     def __init__(self):
-        self.db = pymysql.connect(host='127.0.0.1', user='root', password='airfoil', db='news', charset='utf8')
+        self.db = pymysql.connect(host='127.0.0.1', port=3307, user='shortnews', password='goldentime1234', db='news', charset='utf8')
 
     def insert_data(self, broadcastName, video_id, title, thumbnail, summary):
-        try:
-            cur = self.db.cursor()
-            setdata = (broadcastName, video_id, title, thumbnail, summary)
-            query = "INSERT INTO news(broadcastName, video_id, title, thumbnail, summary) VALUES(%s, %s, %s, %s, %s)"
-            cur.execute(query, setdata)
-            self.db.commit()
-        except Exception as e:
-            print("db error", e)
+        video_id_list = self.select_all_video_id()
+        if video_id not in video_id_list:
+            try:
+                cur = self.db.cursor()
+                setdata = (broadcastName, video_id, title, thumbnail, summary)
+                query = "INSERT INTO news(broadcastName, video_id, title, thumbnail, summary) VALUES(%s, %s, %s, %s, %s)"
+                cur.execute(query, setdata)
+                self.db.commit()
+            except Exception as e:
+                print("db error", e)
 
-        finally:
-            if cur:
-                cur.close()
-            """if self.db:
-                self.db.close()"""
+            finally:
+                if cur:
+                    cur.close()
+        else:
+            pass
+        return
 
     def select_all(self):
         '''
@@ -76,6 +79,24 @@ class DBManager():
             print('db error', e)
         finally:
             return summarized_news
+        
+    def select_all_video_id(self):
+        video_id_list = []
+        try:
+            with self.db.cursor() as cur:
+                query = "SELECT video_id FROM news"
+                cur.execute(query)
+                video_id_tuple = cur.fetchall()
+
+        except pymysql.Error as e:
+            print('db error', e)
+
+        for attr in video_id_tuple:
+            video_id_list.append(attr[0])
+
+
+        return video_id_list
+
 
     
 

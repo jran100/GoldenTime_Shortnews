@@ -6,7 +6,7 @@ import openai
 class ChatGPTClient():
     def __init__(self) -> None:
         self.openai = openai
-        self.openai.api_key = "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"
+        self.openai.api_key = "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"
 
     def request_summary(self, transcript) -> str:
         messages = []
@@ -27,13 +27,13 @@ class YoutubeClient():
             "v3",
             developerKey="AIzaSyCcu40FYJarmjUNyilOh4gLPab8DSEOeno")
 
-    def request_transcript(self, videoID) -> str:
+    def request_transcript(self, video_id) -> str:
         '''
         video id를 바탕으로 해당 동영상의 자막을 가져오는 함수
         '''
         transcript = ""
         try:
-            tsAPI = YouTubeTranscriptApi.get_transcript(video_id=videoID, languages=["ko"])
+            tsAPI = YouTubeTranscriptApi.get_transcript(video_id=video_id, languages=["ko"])
             if "text" in tsAPI[0]:
                 for dict in tsAPI:
                     transcript += dict["text"]
@@ -41,7 +41,7 @@ class YoutubeClient():
                 raise Exception("There is no Transcripts")
 
         except Exception as e:
-            print("Error:", str(e))
+            print("Transcript API Error:", str(e))
 
         return transcript
     
@@ -72,7 +72,8 @@ class YoutubeClient():
 
             if 'H' not in video_duration:
                 minutes = self.get_minute(video_duration)
-                if minutes <= 10 and minutes > 2:
+                if minutes <= 10 and minutes > 1:
+                    print(minutes) ##
                     video_info.append({"id": video_id, "title": video_title, "thumbnail": video_thumbnail, "url": f"/play_video/{video_id}"})
 
         return video_info
