@@ -1,6 +1,13 @@
-from flask import Flask, render_template, request, typing as ft
+from flask import Flask, render_template, request
 from flask.views import View
 from manager import NewsManager
+
+"""
+//
+여기 주석처리 해놓은 것들은 UI 쪽 모듈화 코드로 as_view() 메소드 관련 에러로 우선 보류.
+UI 담당 분들은 시간 남으시면 오류 해결 부탁드립니다. @백정란 @윤성원
+//
+
 
 class ListView(View):
     methods=['GET', 'POST']
@@ -26,6 +33,19 @@ class SummaryView(View):
         
         return render_template('video_player.html', video_id=video_id, summary=summary)
 
+list_view = ListView()
+summary_view = SummaryView()
+app = Flask(__name__)
+app.add_url_rule('/listview', view_func=list_view.as_view('listview'))
+app.add_url_rule('/play_video/<video_id>', view_func=summary_view.as_view('summaryview'))
+
+
+
+if __name__ == '__main__':
+    app.run()
+
+
+"""
 
 
 app = Flask(__name__)
@@ -49,16 +69,6 @@ def request_summaryView(video_id):
         
     return render_template('video_player.html', video_id=video_id, summary=summary)
 
-
-
-"""
-list_view = ListView()
-summary_view = SummaryView()
-app = Flask(__name__)
-app.add_url_rule('/listview', view_func=list_view.as_view('listview'))
-app.add_url_rule('/play_video/<video_id>', view_func=summary_view.as_view('summaryview'))
-
-"""
 
 if __name__ == '__main__':
     app.run()
