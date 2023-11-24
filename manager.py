@@ -24,26 +24,6 @@ class DBManager():
             pass
         return
 
-    def select_all(self):
-        '''
-        방송사 상관없이 모든 뉴스 영상 가져오기
-        '''
-        ret = []
-        try:
-            with self.db.cursor() as cur:
-                query = "SELECT video_id, title, thumbnail FROM news" #추가수정
-                cur.execute(query)
-                rows = cur.fetchall()
-                for e in rows:
-                    news = {'video_id': e[0], 'title': e[1], 'thumbnail': e[2]}
-                    ret.append(news)
-                
-                #for row in rows:
-                    #print(row)
-        except pymysql.Error as e:
-            print('db error', e)
-        finally:
-            return ret
 
     def select_broadcast(self, broadcastName):
         '''
@@ -56,7 +36,7 @@ class DBManager():
                 cur.execute(query, (broadcastName, ))
                 rows = cur.fetchall()
                 for e in rows:
-                    news = {'video_id': e[0], 'title': e[1], 'thumbnail': e[2]}
+                    news = {'video_id': e[0], 'title': e[1], 'thumbnail': e[2], 'url': f"/play_video/{e[0]}"}
                     ret.append(news)
                 #for row in rows:
                     #print(row)
@@ -69,11 +49,11 @@ class DBManager():
     def select_summary(self, video_id):
         try:
             with self.db.cursor() as cur:
-                query = "SELECT video_id, title, summary FROM news WHERE video_id = %s"
+                query = "SELECT video_id, summary FROM news WHERE video_id = %s"
                 cur.execute(query, (video_id, ))
                 rows = cur.fetchall()
                 e = rows[0]
-                summarized_news = {'video_id': e[0], 'title': e[1], 'summary': e[2]}
+                summarized_news = {'video_id': e[0], 'summary': e[1]}
 
         except pymysql.Error as e:
             print('db error', e)

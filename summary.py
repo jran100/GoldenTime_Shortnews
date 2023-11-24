@@ -6,7 +6,7 @@ import openai
 class ChatGPTClient():
     def __init__(self) -> None:
         self.openai = openai
-        self.openai.api_key = "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"
+        self.openai.api_key = "api-key"
 
     def request_summary(self, transcript) -> str:
         messages = []
@@ -66,7 +66,7 @@ class YoutubeClient():
             video_id = video["id"]["videoId"]
             title = self.youtube.videos().list(part="snippet", id=video_id).execute()
             video_title = title["items"][0]["snippet"]["title"]
-            video_thumbnail = title["items"][0]["snippet"]["thumbnails"]["default"]["url"]
+            video_thumbnail = title["items"][0]["snippet"]["thumbnails"]["standard"]["url"]
 
             video_duration = self.request_video_length(video_id)
 
