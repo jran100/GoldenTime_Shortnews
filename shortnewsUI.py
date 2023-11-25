@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request
 from flask.views import View
+
 from manager import NewsManager
 
 """
 //
 여기 주석처리 해놓은 것들은 UI 쪽 모듈화 코드로 as_view() 메소드 관련 에러로 우선 보류.
-UI 담당 분들은 시간 남으시면 오류 해결 부탁드립니다. @백정란 @윤성원
+#TODO(백정란, 윤성원): flask 공식 문서에서 view_as 함수에 대해 공부하고, 클래스 기반 뷰에 대해 알아 볼 것.
+https://flask-docs-kr.readthedocs.io/ko/latest/views.html#id1
 //
 
 

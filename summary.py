@@ -4,6 +4,13 @@ import openai
 
 
 class ChatGPTClient():
+    """
+    Chat GPT API를 통해 GPT에게 요약을 요청하는 메소드를 가지고 있다.
+
+    Attributes:
+        openai: openai 객체
+        openai.api: 문자열 형태의 api key를 저장하는 멤버 변수
+    """
     def __init__(self) -> None:
         self.openai = openai
         self.openai.api_key = "api-key"
@@ -21,6 +28,12 @@ class ChatGPTClient():
 
 
 class YoutubeClient():
+    """
+    Youtube API를 통해 유튜브로부터 제목, 썸네일, 자막등을 가져오는 메소드를 가지고 있다.
+
+    Attributes:
+        youtube: channel_id, video_id 등의 값으로 해당 채널의 영상 정보를 가져오는 객체를 저장
+    """
     def __init__(self):
         self.youtube = build(
             "youtube",
@@ -28,9 +41,6 @@ class YoutubeClient():
             developerKey="AIzaSyCcu40FYJarmjUNyilOh4gLPab8DSEOeno")
 
     def request_transcript(self, video_id) -> str:
-        '''
-        video id를 바탕으로 해당 동영상의 자막을 가져오는 함수
-        '''
         transcript = ""
         try:
             tsAPI = YouTubeTranscriptApi.get_transcript(video_id=video_id, languages=["ko"])
@@ -45,10 +55,10 @@ class YoutubeClient():
 
         return transcript
     
-    def request_video_length(self, videoID:str):
+    def request_video_length(self, videoID) -> str:
         '''
         영상 길이를 가져오는 함수
-        T00H00M 형식
+        return: 'T00H00M' 문자열 형식
         '''
         video_details = self.youtube.videos().list(part="contentDetails", id=videoID).execute()
         video_duration = video_details["items"][0]["contentDetails"]["duration"]
@@ -73,8 +83,10 @@ class YoutubeClient():
             if 'H' not in video_duration:
                 minutes = self.get_minute(video_duration)
                 if minutes <= 10 and minutes > 1:
-                    print(minutes) ##
-                    video_info.append({"id": video_id, "title": video_title, "thumbnail": video_thumbnail, "url": f"/play_video/{video_id}"})
+                    video_info.append({"id": video_id,
+                                       "title": video_title,
+                                       "thumbnail": video_thumbnail,
+                                       "url": f"/play_video/{video_id}"})
 
         return video_info
     
