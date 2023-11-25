@@ -22,26 +22,24 @@ class Updater():
 
     def update_news(self, broadcastName, broadcastID, maxResults):
         #하루에 한번 업데이트
-        if self.isTime():
-            gpt_client = ChatGPTClient()
-            youtube_client = YoutubeClient()
-            db_manager = DBManager()
+        gpt_client = ChatGPTClient()
+        youtube_client = YoutubeClient()
+        db_manager = DBManager()
 
-            videos = youtube_client.request_video_info(broadcastID, maxResults)
+        videos = youtube_client.request_video_info(broadcastID, maxResults)
             
-            for video in videos:
-                video_id = video["id"]
-                title = video["title"]
-                thumbnail = video['thumbnail']
-                transcript = youtube_client.request_transcript(video_id)
-                summary = gpt_client.request_summary(transcript)
-                #DB에 뉴스 업데이트
-                db_manager.insert_data(broadcastName, video_id, title, thumbnail, summary)
+        for video in videos:
+            video_id = video["id"]
+            title = video["title"]
+            thumbnail = video['thumbnail']
+            transcript = youtube_client.request_transcript(video_id)
+            summary = gpt_client.request_summary(transcript)
+            #DB에 뉴스 업데이트
+            db_manager.insert_data(broadcastName, video_id, title, thumbnail, summary)
 
-            return
+        return
 
-        else:
-            return
+
 
 
 
@@ -54,7 +52,8 @@ sbs_id = "UCkinYTS9IHqOEwR1Sze2JTw" #SBS
 
 if __name__ == '__main__':
     update = Updater()
-    update.update_news('MBC', mbc_id, 100)
-    #update.update_news('SBS', sbs_id, 70)
+    if update.isTime():
+        update.update_news('MBC', mbc_id, 30)
+        #update.update_news('SBS', sbs_id, 30)
     
 
