@@ -3,13 +3,11 @@ from flask.views import View
 
 from manager import NewsManager
 
-"""
-//
-여기 주석처리 해놓은 것들은 UI 쪽 모듈화 코드로 as_view() 메소드 관련 에러로 우선 보류.
-#TODO(백정란, 윤성원): flask 공식 문서에서 view_as 함수에 대해 공부하고, 클래스 기반 뷰에 대해 알아 볼 것.
-https://flask-docs-kr.readthedocs.io/ko/latest/views.html#id1
-//
 
+#TODO(백정란): ListView 클래스 기반 뷰에 대해 오류를 해결 한 후, ListView 관련 주석 해제
+#TODO(윤성원): SummaryView 클래스 기반 뷰에 대해 오류를 해결 한 후, SummaryView 관련 주석 해제
+
+"""
 
 class ListView(View):
     methods=['GET', 'POST']
