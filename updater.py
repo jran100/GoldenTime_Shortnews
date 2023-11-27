@@ -40,13 +40,15 @@ class Updater():
             
         for video in videos:
             video_id = video["id"]
-            title = video["title"]
+            actual_title = video["title"]
             thumbnail = video['thumbnail']
             transcript = youtube_client.request_transcript(video_id)
+
             summary = gpt_client.request_summary(transcript)
+            title = gpt_client.request_title(summary)
 
             #DB에 뉴스 업데이트
-            db_manager.insert_data(broadcastName, video_id, title, thumbnail, summary)
+            db_manager.insert_data(broadcastName, video_id, title, thumbnail, summary, actual_title)
 
         return
 

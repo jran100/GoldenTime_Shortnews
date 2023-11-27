@@ -13,11 +13,22 @@ class ChatGPTClient():
     """
     def __init__(self) -> None:
         self.openai = openai
-        self.openai.api_key = "api-key"
+        self.openai.api_key = "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"
 
     def request_summary(self, transcript) -> str:
         messages = []
         content = "다음 뉴스 스크립트를 5개의 문장으로 요약해줘\n 뉴스 스크립트:\n" + transcript
+        messages.append({"role": "user", "content": f"{content}"})
+
+        response = self.openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k",
+            messages=messages
+        )
+        return response['choices'][0]['message']['content'].strip()
+    
+    def request_title(self, summary) -> str:
+        messages = []
+        content = "다음 뉴스 요약본을 1개의 제목으로 만들어줘\n 뉴스 요약본:\n" + summary
         messages.append({"role": "user", "content": f"{content}"})
 
         response = self.openai.ChatCompletion.create(

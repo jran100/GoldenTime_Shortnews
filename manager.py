@@ -16,14 +16,14 @@ class DBManager():
                                   db='news',
                                   charset='utf8')
 
-    def insert_data(self, broadcastName, video_id, title, thumbnail, summary):
+    def insert_data(self, broadcastName, video_id, title, thumbnail, summary, actual_title):
         video_id_list = self.select_all_video_id()
         if video_id not in video_id_list:
             try:
                 cur = self.db.cursor()
-                setdata = (broadcastName, video_id, title, thumbnail, summary)
-                query = "INSERT INTO news(broadcastName, video_id, title, thumbnail, summary)\
-                    VALUES(%s, %s, %s, %s, %s)"
+                setdata = (broadcastName, video_id, title, thumbnail, summary, actual_title)
+                query = "INSERT INTO news(broadcastName, video_id, title, thumbnail, summary, actual_title)\
+                    VALUES(%s, %s, %s, %s, %s, %s)"
                 
                 cur.execute(query, setdata)
                 self.db.commit()
