@@ -13,7 +13,7 @@ class ChatGPTClient():
     """
     def __init__(self) -> None:
         self.openai = openai
-        self.openai.api_key = "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"
+        self.openai.api_key = "api-key"
 
     def request_summary(self, transcript) -> str:
         messages = []

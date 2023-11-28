@@ -44,7 +44,6 @@ app.add_url_rule('/play_video/<video_id>', view_func=summary_view.as_view('summa
 if __name__ == '__main__':
     app.run()
 
-
 """
 
 
